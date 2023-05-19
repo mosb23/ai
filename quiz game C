@@ -1,0 +1,303 @@
+#include<stdio.h>
+#include<conio.h>
+#include<ctype.h>
+#include<stdlib.h>
+#include<string.h>
+struct Info {
+	char name[100];
+	float score;
+    };
+void show_record(){
+    system("cls");
+    FILE *p;
+    struct Info sc;
+    p=fopen("info.txt","r");
+	fscanf(p,"%s%f",&sc.name,&sc.score);
+	printf("\n\n\t\t*************************************************************");
+	printf("\n\n\t\t %s has secured the Highest Score %0.2f",sc.name,sc.score);
+	printf("\n\n\t\t*************************************************************");
+	fclose(p);
+    }
+void edit_score(struct Info x){
+    system("cls");
+    struct Info y;
+	FILE *p;
+	p=fopen("info.txt","r");
+	fscanf(p,"%s%f",&y.name,&y.score);
+	if (x.score>=y.score){ 
+        y.score=x.score;
+	    fclose(p);
+	    p=fopen("info.txt","w");
+	    fprintf(p,"%s\n%.2f",x.name,x.score);
+	    fclose(p);
+        }
+    }
+void reset_score(){
+    system("cls");
+    struct Info z;
+	FILE *p;
+	p=fopen("info.txt","w");
+	    fprintf(p,"score has been reset to  0.0 ");
+	    fclose(p);
+    }
+void help(){
+    system("cls");
+    printf("\n\n                              HELP");
+    printf("\n\t......................... The Quiz Game.........................");
+    printf("\n >> Your game starts with the CHALLANGE ROUND. In this round you will be asked");
+    printf("\n    total 10 questions each right answer will be awarded $100,000.");
+    printf("\n    By this way you can win upto ONE MILLION cash prize in USD...............");
+    printf("\n >> You will be given 4 options and you have to press A, B ,C or D for the");
+    printf("\n    right option");
+    printf("\n >> You will be asked questions continuously if you keep giving the right answers.");
+    printf("\n >> No negative marking for wrong answers");
+	printf("\n\n\t*********************BEST OF LUCK*********************************");
+	printf("\n>>The QUIZ GAME is developed by Mohamed Ahmed / Yousef Abdelhamed / Mohamed Magdy>>\n\n\n\n\n");
+    }
+void sort (struct Info players[]){
+	for (int i = 0 ; i <2 ; i++){
+		for (int j = 0 ; j < 2-i ;j++ ){
+			if (players[j].score>players[j+1].score){
+				char temp[100];
+				strcpy(temp,players[j].name); 
+				strcpy(players[j].name,players[j+1].name);
+				strcpy(players[j+1].name,temp);
+				float temp_score = players[j].score;
+				players[j].score=players[j+1].score;
+				players[j+1].score=temp_score; 
+			}
+		}
+	}
+   }  
+int main(){
+    int counter1=0,counter2=0,counter3=0,score1=0,score2=0,score3=0;
+    char choice,gamechoice;
+    float score=0.0;
+    char playername1[40],playername2[40],playername3[40];
+    struct Info x[3];
+    char questions[][100]={"1. Which nation has won the most World Cups?",
+                        "2. In what year was the inaugural tournament?",
+                        "3. Where was the inaugural World Cup in 1930 held?",
+                        "4. The 2026 World Cup will be the biggest ever with 48 teams competing, how many nations will host?",
+                        "5. Which legendary men's player has won the most World Cups?",
+                        "6. Who is the all-time leading scorer at the men's World Cup?",
+                        "7. Which nation is the only one to participate in every tournament?",
+                        "8. Who did Zinedine Zidane headbutt in the 2006 final?",
+                        "9. In what year was Maradona's Hand of God incident?",
+                        "10. In what year was the World Cup first broadcast on TV?"};
+    char options[][100]={"A. Germany","B. Italy","C. Colombia","D. Brazil",
+                        "A. 1926","B. 1930","C. 1934","D. 1938",
+                        "A. Uruguay","B. Brazil","C. Chile","D. Argentina",
+                        "A. 1","B. 2","C. 3","D. 4",
+                        "A. Pele","B. Beckenbauer","C. Del Piero","D. Matthaus",
+                        "A. Cristiano Ronaldo","B. Lionel Messi","C. Thierry Henry","D. Miroslav Klose",
+                        "A. Argentina","B. Germany","C. Brazil","D. France",
+                        "A. Marco Materazzi","B. Fabio Cannavaro","C. Gianluca Zambrotta","D. Gennaro Gattuso",
+                        "A. 1978","B. 1982","C. 1986","D. 1990",
+                        "A. 1950","B. 1954","C. 1934","D. 1938"};
+    char answers[10]={'D','B','A','C','A','D','C','A','C','B'};
+    mainhome:
+            system("cls");
+            system("COLOR 75");
+            printf("\n\t\t\t\t\t *********************************************************");
+            printf("\n\t\t\t\t\t ********** DO YOU WANT TO BE A MILLIONAIRE??!! **********") ;
+            printf("\n\t\t\t\t\t *********************************************************");
+            printf("\n\t\t\t\t\t            WELCOME to the World cup quiz game\n\n");
+            printf(" > press S to start the game \n");
+            printf(" > press V to view the highest score\n");
+            printf(" > Press R to reset score\n");
+            printf(" > press H for Help\n");
+            printf(" > press Q to Quit the game\n");
+            printf("                             ");
+            choice = toupper(getch());
+            if(choice == 'V'){
+                show_record();
+                getch();
+                goto mainhome;
+                }
+            else if(choice == 'R'){
+                reset_score();
+                goto mainhome;
+                }
+            else if(choice == 'H'){
+                help();
+                getch();
+                goto mainhome;
+                }
+            else if(choice == 'S'){
+                    goto game1;
+                    }
+            else{
+                system("cls");
+                exit(1);
+                }
+
+    game1:
+        counter1=0,score1=0;
+        system("cls");
+    	printf("\n\n\n\n\n\n\n\n\n\n\t\t\tRegister first player name:");
+        gets(playername1);
+        system("cls");
+        system("COLOR 05");
+        printf("\n ------------------  Welcome %s to The Quiz Game --------------------------",playername1);
+        printf("\n\n Here are some tips you might wanna know before playing:");
+        printf("\n -------------------------------------------------------------------------");
+        printf("\n    _Total of 10 questions.\n    _Each right answer will be awarded $100,000!");
+        printf("\n    _By this way you can win upto ONE MILLION cash prize!!!!!..........");
+        printf("\n\n >> _You will be given 4 options and you have to press A, B ,C or D for the");
+        printf("\n    right option.");
+        printf("\n\n >> _You will be asked questions continuously, till right answers are given");
+        printf("\n\n >> _No negative marking for wrong answers!");
+        printf("\n\n\t\t!!!!!!!!!!!!! ALL THE BEST !!!!!!!!!!!!!");
+        printf("\n\n\n\t\t****************************************");
+        printf("\n\t\t****** Press G to start the game! ******");
+        printf("\n\t\t****************************************");
+        printf("\n\n Press any other key to return to the main menu!");
+        if (toupper(getch())=='G'){
+            for(int i=0;i<10;i++){
+                system("cls");
+                system("COLOR 01");
+                printf("\n\n%s\n",questions[i]);
+                printf("\n");
+                for(int j=(i*4);j<(i*4)+4;j++){
+                    printf("%s\n",options[j]);
+                }
+                gamechoice=toupper(getch());
+                if (gamechoice==answers[i]){
+                    system("COLOR 0A");
+                    printf("\n\nCorrect!!!");
+                    counter1++;
+                    getch();
+                    }
+                else{
+                    system("COLOR 0C");
+                    printf("\n\nWrong!!! The correct answer is %c",answers[i]);
+                    getch();
+                    break;
+				    }
+                }            
+            score1 =100000*counter1;
+            x[0].score = score1;
+			strcpy(x[0].name,playername1);
+            goto game2;
+        }
+        else{
+            goto mainhome;
+        }
+	game2:
+        counter2=0,score2=0;
+        system("cls");
+        system("COLOR 03");
+        printf("\n\n\n\n\n\n\n\n\n\n\t\t\tRegister second player name:");
+        gets(playername2);
+        system("cls");
+        system("COLOR 05");
+        printf("\n ------------------  Welcome %s to The Quiz Game --------------------------",playername2);
+        printf("\n\n Here are some tips you might wanna know before playing:");
+        printf("\n -------------------------------------------------------------------------");
+        printf("\n    total of 10 questions. Each right answer will be awarded $100,000!");
+        printf("\n    By this way you can win upto ONE MILLION cash prize!!!!!..........");
+        printf("\n >> You will be given 4 options and you have to press A, B ,C or D for the");
+        printf("\n    right option.");
+        printf("\n >> You will be asked questions continuously, till right answers are given");
+        printf("\n >> No negative marking for wrong answers!");
+        printf("\n\n\t!!!!!!!!!!!!! ALL THE BEST !!!!!!!!!!!!!");
+        printf("\n\n\n Press G to start the game!\n");
+        printf("\n Press any other key to return to the main menu!");
+        if (toupper(getch())=='G'){
+            for(int i=0;i<10;i++){
+                system("cls");
+                system("COLOR 01");
+                printf("\n\n%s\n",questions[i]);
+                printf("\n");
+                for(int j=(i*4);j<(i*4)+4;j++){
+                    printf("%s\n",options[j]);
+                }
+                gamechoice=toupper(getch());
+                if (gamechoice==answers[i]){
+                    system("COLOR 0A");
+                    printf("\n\nCorrect!!!");
+                    counter2++;
+                    getch();
+                    }
+                else{
+                    system("COLOR 0C");
+                    printf("\n\nWrong!!! The correct answer is %c",answers[i]);
+                    getch();
+                    break;
+                    }
+                }        
+            score2=100000*counter2;
+            x[1].score = score2;
+			strcpy(x[1].name,playername2);
+            goto game3;
+        }
+        else{
+            goto mainhome;
+        }
+
+	game3:
+        counter3=0,score3=0;
+        system("cls");
+        system("COLOR 03");
+        printf("\n\n\n\n\n\n\n\n\n\n\t\t\tRegister third player name:");
+        gets(playername3);
+        system("cls");
+        system("COLOR 05");
+        printf("\n ------------------  Welcome %s to The Quiz Game --------------------------",playername3);
+        printf("\n\n Here are some tips you might wanna know before playing:");
+        printf("\n -------------------------------------------------------------------------");
+        printf("\n    total of 10 questions. Each right answer will be awarded $100,000!");
+        printf("\n    By this way you can win upto ONE MILLION cash prize!!!!!..........");
+        printf("\n >> You will be given 4 options and you have to press A, B ,C or D for the");
+        printf("\n    right option.");
+        printf("\n >> You will be asked questions continuously, till right answers are given");
+        printf("\n >> No negative marking for wrong answers!");
+        printf("\n\n\t!!!!!!!!!!!!! ALL THE BEST !!!!!!!!!!!!!");
+        printf("\n\n\n Press G to start the game!\n");
+        printf("\n Press any other key to return to the main menu!");
+        if (toupper(getch())=='G'){
+            for(int i=0;i<10;i++){
+                system("cls");
+                system("COLOR 01");
+                printf("\n\n%s\n",questions[i]);
+                printf("\n");
+                for(int j=(i*4);j<(i*4)+4;j++){
+                    printf("%s\n",options[j]);
+                }
+                gamechoice=toupper(getch());
+                if (gamechoice==answers[i]){
+                    system("COLOR 0A");
+                    printf("\n\nCorrect!!!");
+                    counter3++;
+                    getch();
+                    }
+                else{
+                    system("COLOR 0C");
+                    printf("\n\nWrong!!! The correct answer is %c",answers[i]);
+                    getch();
+                    break;
+                    }
+                }            
+            score3=100000*counter3;
+            x[2].score = score3;
+			strcpy(x[2].name,playername3);
+            goto score;
+        }
+        else{
+            goto mainhome;
+        }
+	score:
+        system("cls");
+        system("COLOR 06");
+        sort(x);
+        edit_score(x[2]);
+        printf("  ***************************************************************************************\n ");
+        printf(" ******                 The Winner with the 1st Position is %s ******                            CASH = %0.2f $ \n ",x[2].name,x[2].score);
+        printf(" **************************************************************************************\n ");
+		printf("                               The 2nd Position is %s                                            CASH = %0.2f $ \n ",x[1].name,x[1].score);
+		printf("                               The 3rd Position is %s                                            CASH = %0.2f $ \n ",x[0].name,x[0].score);
+        getch();
+        goto mainhome;			          
+    return 0 ;
+    }
