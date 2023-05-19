@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Stack{
+	int* arr;
+	int sp;
+	int size;
+
+	Stack()
+	{
+		arr = NULL;
+		sp = -1;
+		size = 0;
+	}
+ };
+bool initializeStack(Stack* s, int size){
+	if (s->arr != NULL)
+		free(s->arr);
+
+	s->arr = (int*)malloc(sizeof(char) * size);
+	if (s->arr == NULL)
+		return false;
+
+
+	s->size = size;
+	s->sp = -1;
+	return true;
+ }
+int priority(char x){
+    if(x == '(')
+        return 0;
+    if(x == '+' || x == '-')
+        return 1;
+    if(x == '*' || x == '/')
+        return 2;
+    return 0;
+ }
+int push(Stack* s, char item){
+	if (s->arr == NULL)
+		return -1;
+	if (s->sp + 1 == s->size)
+		return -2;
+
+	s->sp++;
+	s->arr[s->sp] = item;
+  	return 1;
+	}
+int pop(Stack* s, char* item){
+	if (s->arr == NULL)
+		return -1;
+	if (s->sp == -1)
+		return -2;
+
+	*item = s->arr[s->sp];
+	s->sp--;
+	return 1;
+ }
+int main(){
+	Stack s;
+	char infix[100] = "";
+	char postfix[100] = "";
+	int postfix_index = 0;
+	printf("Enter epxression: ");
+	scanf("%s", infix);
+if (initializeStack(&s, strlen(infix)) == false){
+		printf("ERROR");
+		return 1;
+	}
+	for (int i = 0; i < strlen(infix); i++){
+		if (infix[i] == '(' )
+			push(&s, infix[i]);
+		else if (infix[i] >= '0' && infix[i] <= '9'){
+			postfix[postfix_index++] = infix[i];
+			postfix[postfix_index] = '\0';
+		 }
+		else if (infix[i] == ')'){
+			char item;
+			pop(&s, &item);
+			while (item != '('){
+				postfix[postfix_index++] = item;
+				postfix[postfix_index] = '\0';
+				pop(&s, &item);
+			 }
+		 }
+		else{ 
+			char item;
+            while(priority(s.sp) >= priority(infix[i])){
+				pop(&s, &item);
+				pop(&s, &infix[i]);
+				push(&s, item);
+			}
+			push(&s , infix[i]);
+	    }
+     }
+    while(s.sp != -1)
+    {
+		pop(&s, &postfix[postfix_index++]);
+		postfix[postfix_index] = '\0';
+	}
+	for (int i = 0; i < strlen(postfix); i++){
+	    printf("%c",postfix[i]);
+	 }
+	return 0;
+}
